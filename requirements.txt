@@ -1,0 +1,10 @@
+gunicorn
+dj-database-url
+psycopg[binary]
+whitenoise
+python-dotenv
+dj-config-url
+django
+requests
+
+tzlocal
