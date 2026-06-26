@@ -6,5 +6,4 @@ python-dotenv
 dj-config-url
 django
 requests
-
 tzlocal
