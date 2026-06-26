@@ -8,24 +8,12 @@
         "maxLambdaSize": "15mb",
         "runtime": "python3.13"
       }
-    },
-    {
-      "src": "build.sh",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "staticfiles"
-      }
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "djangotesttask_api/wsgi.py"
     }
-  ],
-  "outputDirectory": "staticfiles"
+  ]
 }
