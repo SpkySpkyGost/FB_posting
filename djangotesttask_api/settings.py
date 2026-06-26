@@ -14,7 +14,7 @@ from pathlib import Path
 import tzlocal
 import os
 from dotenv import load_dotenv
-import urllib
+import urllib.parse
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
