@@ -1,7 +1,7 @@
 import os
+from dotenv import load_dotenv
 import requests
 from abc import ABC, abstractmethod
-from dotenv import load_dotenv
 from django.utils.dateparse import parse_datetime
 
 load_dotenv()

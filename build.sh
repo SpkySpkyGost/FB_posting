@@ -1,5 +1,12 @@
-#!/usr/bin/env bash
-set -o errexit
+#!/bin/bash
+
+echo "Starting build process..."
+
+echo "Installing dependencies..."
 pip install -r requirements.txt
-python manage.py collectstatic --no-input
-python manage.py migrate
+
+#for Vercel
+echo "Collecting static files..."
+python manage.py collectstatic --noinput --clear
+
+echo "Build completed successfully!"

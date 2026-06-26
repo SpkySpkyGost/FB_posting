@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import tzlocal
+import os
+from dotenv import load_dotenv
+import urllib
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7vj8#ga-^!c70_x&))yae@d4ics24s35i6b=f)wdw1x^^q!q36'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    '.vercel.app,localhost,127.0.0.1'
+).split(',')
 
 
 # Application definition
@@ -49,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'djangotesttask_api.urls'
@@ -71,9 +79,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangotesttask_api.wsgi.application'
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+
+'''
 
 DATABASES = {
     'default': {
@@ -81,7 +92,45 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+'''
 
+# Database configuration for Neon PostgreSQL
+if os.environ.get("DATABASE_URL"):
+    # Used when connecting via Vercel + Neon integration
+    url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": url.path.lstrip("/"),
+            "USER": url.username,
+            "PASSWORD": url.password,
+            "HOST": url.hostname,
+            "PORT": url.port or 5432,
+            "OPTIONS": {
+                "sslmode": "require",
+            },
+            "DISABLE_SERVER_SIDE_CURSORS": True,   # Important for Neon/serverless
+            "CONN_HEALTH_CHECKS": True,
+            # "CONN_MAX_AGE": 0,                   # Uncomment if you have connection issues
+        }
+    }
+else:
+    # Fallback for Neon individual environment variables
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("PGDATABASE"),
+            "USER": os.environ.get("PGUSER"),
+            "PASSWORD": os.environ.get("PGPASSWORD"),
+            "HOST": os.environ.get("PGHOST"),
+            "PORT": os.environ.get("PGPORT", 5432),
+            "OPTIONS": {
+                "sslmode": "require",
+            },
+            "DISABLE_SERVER_SIDE_CURSORS": True,
+            "CONN_HEALTH_CHECKS": True,
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -117,3 +166,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'   # Vercel will collect here automatically
