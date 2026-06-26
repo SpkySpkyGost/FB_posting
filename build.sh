@@ -7,6 +7,9 @@ echo "Running database migrations..."
 uv run python manage.py migrate --noinput || echo "Migrate had issues (continuing anyway)"
 
 echo "Collecting static files..."
-python manage.py collectstatic --noinput --clear || echo "Collectstatic had issues"
+uv run python manage.py collectstatic --noinput --clear || echo "Collectstatic had issues"
+
+# Ensure the folder exists even if collectstatic had problems
+mkdir -p staticfiles
 
 echo "Build completed successfully!"
