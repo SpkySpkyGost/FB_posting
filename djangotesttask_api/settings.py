@@ -111,7 +111,7 @@ if os.environ.get("DATABASE_URL"):
             },
             "DISABLE_SERVER_SIDE_CURSORS": True,   # Important for Neon/serverless
             "CONN_HEALTH_CHECKS": True,
-            # "CONN_MAX_AGE": 0,                   # Uncomment if you have connection issues
+            # "CONN_MAX_AGE": 0,
         }
     }
 else:
