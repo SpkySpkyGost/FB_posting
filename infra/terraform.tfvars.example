@@ -1,0 +1,29 @@
+# Copy to terraform.tfvars and fill in your values.
+# terraform.tfvars is gitignored so secrets never reach version control.
+# (Alternatively, export any of these as TF_VAR_<name> environment variables.)
+
+# ── Provider credentials ──────────────────────────────────────────────
+vercel_api_token = "your-vercel-api-token"
+# vercel_team_id = "team_xxx"          # only if deploying under a team
+neon_api_key     = "your-neon-api-key"
+# neon_org_id    = "org-xxx"           # recommended
+
+# ── Project ───────────────────────────────────────────────────────────
+project_name = "marketing-microsite"
+github_repo  = "your-username/your-repo"
+git_branch   = "main"
+neon_region  = "aws-eu-central-1"
+
+# ── Django ────────────────────────────────────────────────────────────
+django_secret_key = "generate-a-long-random-value"
+debug             = "False"
+allowed_hosts     = ".vercel.app,localhost,127.0.0.1"
+
+# ── Facebook (Direct mode) ────────────────────────────────────────────
+fb_page_id           = ""
+fb_page_access_token = ""
+fb_graph_version     = "v25.0"
+
+# ── Buffer (Orchestrated mode) ────────────────────────────────────────
+buffer_access_token = ""
+buffer_profile_id   = ""
