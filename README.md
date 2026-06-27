@@ -1,5 +1,7 @@
 # Marketing Microsite
 
+Česká verze: https://github.com/SpkySpkyGost/FB_posting/blob/main/README_CZ.md
+
 This service acts as a marketing gateway capable of publishing content and tracking analytics via two distinct execution flows: **Direct API Access** (Facebook Graph API) and **Orchestrated Integration** (Buffer GraphQL API).
 
 ## 1. System Architecture & Tech Stack
